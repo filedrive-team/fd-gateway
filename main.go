@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"os"
 
 	logging "github.com/ipfs/go-log/v2"
 	cli "github.com/urfave/cli/v2"
@@ -9,17 +11,41 @@ import (
 
 func main() {
 
-	logging.SetLogLevel("*", "debug")
-	fmt.Println("开始")
+	logging.SetLogLevel("*", "info")
 
-	app := cli.NewApp()
-
-	app.Flags = []cli.Flag{
-		&cli.StringFlag{
-			Name:  "repo",
-			Value: "~/.lotus",
-		},
+	local := []*cli.Command{
+		getCmd,
+		putCmd,
 	}
-	fmt.Println(app)
-	fmt.Println("结束")
+
+	app := &cli.App{
+		Name:     "fd_gateway",
+		Flags:    []cli.Flag{},
+		Commands: local,
+	}
+
+	if err := app.Run(os.Args); err != nil {
+		fmt.Println(os.Args)
+		fmt.Println(err)
+	}
+}
+
+var getCmd = &cli.Command{
+	Name:  "get",
+	Usage: "Get files by CID",
+	Flags: []cli.Flag{},
+	Action: func(c *cli.Context) error {
+		ctx := context.Background()
+		targetPath := c.Args().First()
+
+		res, err := gateway.GetByCID(ctx, targetPath)
+
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(res)
+
+		return nil
+	},
 }
