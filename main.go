@@ -15,7 +15,7 @@ func main() {
 
 	local := []*cli.Command{
 		getCmd,
-		putCmd,
+		postCmd,
 	}
 
 	app := &cli.App{
@@ -39,6 +39,26 @@ var getCmd = &cli.Command{
 		targetPath := c.Args().First()
 
 		res, err := gateway.GetByCID(ctx, targetPath)
+
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(res)
+
+		return nil
+	},
+}
+
+var postCmd = &cli.Command{
+	Name:  "post",
+	Usage: "Post files into the IPFS system",
+	Flags: []cli.Flag{},
+	Action: func(c *cli.Context) error {
+		ctx := context.Background()
+		targetPath := c.Args().First()
+
+		res, err := gateway.PostFiles(ctx, targetPath)
 
 		if err != nil {
 			return err
