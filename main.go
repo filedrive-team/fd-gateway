@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	gateway "github.com/filedrive-team/fd-gateway/cmd"
 	logging "github.com/ipfs/go-log/v2"
 	cli "github.com/urfave/cli/v2"
 )
@@ -57,7 +58,6 @@ var postCmd = &cli.Command{
 	Action: func(c *cli.Context) error {
 		ctx := context.Background()
 		targetPath := c.Args().First()
-
 		res, err := gateway.PostFiles(ctx, targetPath)
 
 		if err != nil {
