@@ -2,10 +2,11 @@ package gateway
 
 import (
 	"context"
-
-	"github.com/application-research/estuary/node"
 )
 
+/*
+ * This class is to implement the file structure of the content got from estuary node
+ */
 type SysFile struct {
 }
 
@@ -18,15 +19,5 @@ func GetByCID(ctx context.Context, targetPath string) (*SysFile, error) {
 	 * Then try to get from estuary node
 	 * and return the file info
 	 */
-	n, err := node.Setup(ctx, da)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if n != nil {
-
-	}
-
 	return nil, nil
 }
